@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 09:20:07
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-06-30 10:54:55
+ * @LastEditTime: 2022-07-01 10:47:07
  *
  * @说明: 游戏窗体 主要实现功能: 关闭,显示,最大最小化
  * @功能说明:
@@ -58,6 +58,10 @@ public class GameJFrame extends JFrame {
         this.mouseListener = mouseListener;
     }
 
+    public void setThread(Thread thread) {
+        this.thread = thread;
+    }
+
     public void init() {
         this.setSize(GameX, GameY); // 设置窗体大小
         this.setTitle("test");
@@ -82,5 +86,14 @@ public class GameJFrame extends JFrame {
         }
         // 界面刷新
         this.setVisible(true);
+        // 如果jp 是runnable的子类实体对象
+        if (this.jPanel instanceof Runnable) {
+            // 已做类型判定,强制类型转换不会出错
+            new Thread((Runnable) this.jPanel).start();
+            // 等效于下面写法
+            // Runnable run=(Runnable)this.jPanel;
+            // Thread th = new Thread(run);
+            // th.start();
+        }
     }
 }

@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-29 10:57:07
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-06-30 15:28:37
+ * @LastEditTime: 2022-07-01 09:18:47
  */
 
 package com.tedu.manager;
@@ -19,8 +19,8 @@ import com.tedu.element.*;
  */
 
 public class ElementManager {
-    private List<Object> listMap;
-    private List<Object> listPlay;
+    // private List<Object> listMap;
+    // private List<Object> listPlay;
     /*
      * String作为key匹配所有元素 play->List<Object> listPlay
      * enemy->List<Object> listEnemy
@@ -88,10 +88,13 @@ public class ElementManager {
         // hashmap散列
         gameElements = new HashMap<GameElement, List<ElementObj>>();
         // 将每种元素集合放到map
-        gameElements.put(GameElement.PLAY, new ArrayList<ElementObj>());
-        gameElements.put(GameElement.ENEMY, new ArrayList<ElementObj>());
-        gameElements.put(GameElement.BOSS, new ArrayList<ElementObj>());
-        gameElements.put(GameElement.MAPS, new ArrayList<ElementObj>());
+        // gameElements.put(GameElement.PLAY, new ArrayList<ElementObj>());
+        // gameElements.put(GameElement.ENEMY, new ArrayList<ElementObj>());
+        // gameElements.put(GameElement.BOSS, new ArrayList<ElementObj>());
+        // gameElements.put(GameElement.MAPS, new ArrayList<ElementObj>());
+        for (GameElement ge : GameElement.values()) {
+            gameElements.put(ge, new ArrayList<ElementObj>());
+        }
 
     }
 }
