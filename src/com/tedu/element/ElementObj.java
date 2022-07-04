@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-29 11:17:43
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-02 08:55:24
+ * @LastEditTime: 2022-07-04 09:33:27
  */
 package com.tedu.element;
 
@@ -12,9 +12,16 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class ElementObj {
-    private int x, y, w, h;
+    private int x;
+    private int y;
+    private int w;
+    private int h;
 
     private ImageIcon icon;
+
+    private boolean life = true; // 生存状态,true存活,false死亡
+    // 可以用枚举值来定义(生存,死亡,隐身,无敌)
+    // 当重新定义一个用于判定状态的变量,需要思考:1.初始化 2.值的变化 3.值的判定
 
     // 还有各种必要的状态值,例如:是否生存
     public ElementObj() {
@@ -85,19 +92,45 @@ public abstract class ElementObj {
      * 3.子弹发射
      */
 
-    public final void model() {
+    public final void model(long gameTime) {
         // 每个对象先换装
-        updateImage();
+        updateImage(gameTime);
         // 再移动
         move();
         // 再发射子弹
-        shoot();
+        addBullet(gameTime);
     }
 
-    protected void updateImage() {
+    protected void updateImage(long... gameTime) {
     }
 
-    protected void shoot() {
+    protected void addBullet(long gameTime) {
+    }
+
+    // 死亡方法 给子类继承
+    // 死亡也是一个对象
+    public void die() {
+    }
+
+    public ElementObj createElement(String str) {
+        return null;
+    }
+
+    /*
+     * @说明 本方法返回 元素的碰撞矩形对象
+     */
+    public Rectangle getRectangle() {
+        return new Rectangle(x, y, w, h);
+    }
+
+    /*
+     * @说明 碰撞方法
+     * 一个是this对象,一个是传入值obj
+     *
+     * @param 返回true有碰撞,返回false无碰撞
+     */
+    public boolean crash(ElementObj obj) {
+        return this.getRectangle().intersects(obj.getRectangle());
     }
 
     /*
@@ -142,4 +175,13 @@ public abstract class ElementObj {
     public void setIcon(ImageIcon icon) {
         this.icon = icon;
     }
+
+    public boolean isLife() {
+        return life;
+    }
+
+    public void setLife(boolean life) {
+        this.life = life;
+    }
+
 }

@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 14:57:43
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-02 08:55:59
+ * @LastEditTime: 2022-07-04 11:07:17
  */
 package com.tedu.element;
 
@@ -14,6 +14,8 @@ import java.util.Map;
 
 import javax.swing.ImageIcon;
 
+import com.tedu.manager.ElementManager;
+import com.tedu.manager.GameElement;
 import com.tedu.manager.GameLoad;
 
 public class Play extends ElementObj {
@@ -39,18 +41,23 @@ public class Play extends ElementObj {
     private boolean down = false;
 
     // 图片集合 用map存储 枚举类型配合移动(拓展)
-    private Map<String, ImageIcon> imgMap;
+    // private Map<String, ImageIcon> imgMap;
     // 默认主角方向向上
     private String direction = "up";
+    private boolean playerAttackType = false; // 攻击状态
 
     public Play(int x, int y, int w, int h, ImageIcon icon) {
         super(x, y, w, h, icon);
 
-        imgMap = new HashMap<>();
-        imgMap.put("left", new ImageIcon(Play.class.getResource("/image/tank/play1/player1_left.png")));
-        imgMap.put("down", new ImageIcon(Play.class.getResource("/image/tank/play1/player1_down.png")));
-        imgMap.put("up", new ImageIcon(Play.class.getResource("/image/tank/play1/player1_up.png")));
-        imgMap.put("right", new ImageIcon(Play.class.getResource("/image/tank/play1/player1_right.png")));
+        // imgMap = new HashMap<>();
+        // imgMap.put("left", new
+        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_left.png")));
+        // imgMap.put("down", new
+        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_down.png")));
+        // imgMap.put("up", new
+        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_up.png")));
+        // imgMap.put("right", new
+        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_right.png")));
     }
 
     /*
@@ -99,6 +106,10 @@ public class Play extends ElementObj {
                     this.down = true;
                     this.direction = "down";
                     break;
+                case 32:
+                    this.playerAttackType = true;
+                    break;
+                // 开启攻击状态
             }
         } else {
             switch (key) {
@@ -106,17 +117,18 @@ public class Play extends ElementObj {
                     this.left = false;
                     break;
                 case 38:
-                    // this.setY(this.getY() - 10);
                     this.up = false;
                     break;
                 case 39:
-                    // this.setX(this.getX() + 10);
                     this.right = false;
                     break;
                 case 40:
-                    // this.setY(this.getY() + 10);
                     this.down = false;
                     break;
+                case 32:
+                    this.playerAttackType = false;
+                    break;
+                // 关闭攻击状态
             }
         }
 
@@ -139,7 +151,81 @@ public class Play extends ElementObj {
         }
     }
 
-    protected void updateImage() {
+    @Override
+    protected void updateImage(long... gameTimes) {
         this.setIcon(GameLoad.imgMap.get(direction));
     }
+
+    /*
+     * 重写规则
+     * 1.重写方法名称和返回值要和父类一样
+     * 2.重写方法的传入参数类型要和父类一样
+     * 3.重写方法访问修饰符,只能比父类更广泛
+     * 比如父类的方法是受保护的,但现在要在非子类中调用,可以子类继承,直接super,再public
+     * 4.重写的方法,抛出的异常,不可以比父类更宽泛,eg父类抛了一个'数组下标移除异常', 子类不能直接抛Exception
+     * 子弹添加,需要发射者的坐标位置,发射者的方向,
+     */
+    private long bulletTime = 0;
+    // bulletTime和传入的时间gameTime进行比较,赋值等操作运算,控制子弹间隔
+
+    @Override
+    public void addBullet(long gameTime) {
+        if (!this.playerAttackType) {
+            return;
+        }
+        this.playerAttackType = false; // 按一次,发射一个子弹(也可增加变量来控制)
+        // super.addBullet();
+        // 构造一个类 需要较多工作 可以选一个方式 如小工厂
+        // 将构造对象的多个步骤进行封装成为一个方法 返回值直接是这个对象
+        // 传递一个固定格式 {x:1,y:2,direction:"up"} json格式
+        ElementObj element = new Bullet().createElement(this.toString());
+        ElementManager.getManager().addElement(element, GameElement.BULLET);
+        // try {
+        // Class<?> forName = Class.forName("com.tedu....");
+        // ElementObj element = Bullet.class.newInstance().createElementObj("");
+
+        // } catch (InstantiationException e) {
+        // e.printStackTrace();
+        // } catch (IllegalAccessException e) {
+
+        // e.printStackTrace();
+        // } catch (ClassNotFoundException e) {
+        // // TODO Auto-generated catch block
+        // e.printStackTrace();
+        // }
+
+        // 会帮助返回对象的实体,并初始化数据
+    }
+
+    // 此处为偷懒,直接用toString,之后还是要自己去定义一个方法
+    @Override
+    public String toString() {
+        // {x:1,y:2,direction:"up"} json格式
+        // 子弹在发射时就已经给予固定的轨迹,可以加上目标,修改json格式
+        int x = this.getX();
+        int y = this.getY();
+        switch (this.direction) {
+            // 后面会改成图片大小,不是固定数值
+            case "up":
+                x += 20;
+                break;
+            case "left":
+                y += 20;
+                break;
+            case "down":
+                x += 20;
+                y += 50;
+                break;
+            case "right":
+                x += 50;
+                y += 20;
+                break;
+        }
+
+        // return "x:" + this.getX() + ",y:" + this.getY() + ",direction:" +
+        // this.direction;
+        return "x:" + x + ",y:" + y + ",direction:" + this.direction;
+
+    }
+
 }
