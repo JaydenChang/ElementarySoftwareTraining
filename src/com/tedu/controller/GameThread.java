@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-01 15:57:05
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-04 10:42:14
+ * @LastEditTime: 2022-07-05 10:29:29
  *
  * @继承 使用继承的方式实现多线程(一般建议使用接口实现)
  */
@@ -22,6 +22,7 @@ import com.tedu.element.Play;
 import com.tedu.game.GameMainJPanel;
 import com.tedu.manager.ElementManager;
 import com.tedu.manager.GameElement;
+import com.tedu.manager.GameLoad;
 
 public class GameThread extends Thread {
     private ElementManager em;
@@ -56,6 +57,8 @@ public class GameThread extends Thread {
      */
 
     private void gameLoad() {
+        GameLoad.MapLoad(1);
+        // 可以为变量,每一关重新加载
         load();
     }
 
@@ -71,11 +74,14 @@ public class GameThread extends Thread {
     private void gameRun() {
         while (true) {
             Map<GameElement, List<ElementObj>> all = em.getGameElements();
+            List<ElementObj> enemies = em.getElementsByKey(GameElement.ENEMY);
+            List<ElementObj> bullets = em.getElementsByKey(GameElement.BULLET);
+            List<ElementObj> maps = em.getElementsByKey(GameElement.MAPS);
 
             autoUpdate(all, gameTime);
-
-            elementCrash();
-
+            elementCrash(enemies, bullets);
+            elementCrash(bullets, maps);
+            // 这里加一个判定水,草地,铁
             gameTime++;// 唯一的时间控制
             try {
                 sleep(50); // 默认理解为一秒刷新100次
@@ -86,16 +92,14 @@ public class GameThread extends Thread {
         }
     }
 
-    public void elementCrash() {
-        List<ElementObj> enemies = em.getElementsByKey(GameElement.ENEMY);
-        List<ElementObj> bullets = em.getElementsByKey(GameElement.BULLET);
+    public void elementCrash(List<ElementObj> listA, List<ElementObj> listB) {
 
         // 在这里用循环,if为真,设置两个对象的死亡状态
 
-        for (int i = 0; i < enemies.size(); i++) {
-            ElementObj enemy = enemies.get(i);
-            for (int j = 0; j < bullets.size(); j++) {
-                ElementObj bullet = bullets.get(j);
+        for (int i = 0; i < listA.size(); i++) {
+            ElementObj enemy = listA.get(i);
+            for (int j = 0; j < listB.size(); j++) {
+                ElementObj bullet = listB.get(j);
                 if (enemy.crash(bullet)) {
                     enemy.setLife(false);
                     bullet.setLife(false);
@@ -139,7 +143,7 @@ public class GameThread extends Thread {
         // ImageIcon("ElementarySoftTraining/image/tank/play1/player1_up.png");
         ImageIcon icon = new ImageIcon(
                 GameMainJPanel.class.getResource("/image/tank/play1/player1_up.png"));
-        System.out.println(icon);
+        // System.out.println(icon);
 
         ElementObj obj = new Play(100, 100, 50, 50, icon); // 实例化对象
         // em.getElementsByKey(GameElement.PLAY).add(obj); // 将对象放到 元素管理器

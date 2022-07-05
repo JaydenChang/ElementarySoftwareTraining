@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-04 07:21:27
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-04 10:48:41
+ * @LastEditTime: 2022-07-05 09:39:17
  */
 package com.tedu.element;
 
@@ -33,7 +33,6 @@ public class Enemy extends ElementObj {
         this.setW(50);
         this.setH(50);
         this.setIcon(new ImageIcon(Enemy.class.getResource("/image/tank/bot/bot_up.png")));
-        System.out.println(this.getRectangle());
         return this;
     }
 

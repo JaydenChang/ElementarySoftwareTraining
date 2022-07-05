@@ -49,8 +49,12 @@ public class GameMainJPanel extends JPanel implements Runnable {
         // GameElement.values(); // 隐藏方法 返回值是一个数组，数组的顺序就是定义枚举的顺序
         for (GameElement ge : GameElement.values()) {
             List<ElementObj> list = all.get(ge);
+            // System.out.println(list);
+            // System.out.println();
             for (int i = 0; i < list.size(); i++) {
                 ElementObj obj = list.get(i);
+                // System.out.println(obj);
+                // System.out.println();
                 obj.showElement(g);
             }
         }
