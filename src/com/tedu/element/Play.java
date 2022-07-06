@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 14:57:43
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-04 11:07:17
+ * @LastEditTime: 2022-07-06 11:14:24
  */
 package com.tedu.element;
 
@@ -45,6 +45,9 @@ public class Play extends ElementObj {
     // 默认主角方向向上
     private String direction = "up";
     private boolean playerAttackType = false; // 攻击状态
+
+    public Play() {
+    }
 
     public Play(int x, int y, int w, int h, ImageIcon icon) {
         super(x, y, w, h, icon);
@@ -156,6 +159,19 @@ public class Play extends ElementObj {
         this.setIcon(GameLoad.imgMap.get(direction));
     }
 
+    @Override
+    public ElementObj createElement(String str) {
+        String[] split = str.split(",");
+        this.setX(Integer.parseInt(split[0]));
+        this.setY(Integer.parseInt(split[1]));
+        ImageIcon icon2 = GameLoad.imgMap.get(split[2]);
+        this.setW(icon2.getIconWidth());
+        this.setH(icon2.getIconHeight());
+        this.setIcon(icon2);
+
+        return this;
+    }
+
     /*
      * 重写规则
      * 1.重写方法名称和返回值要和父类一样
@@ -178,7 +194,8 @@ public class Play extends ElementObj {
         // 构造一个类 需要较多工作 可以选一个方式 如小工厂
         // 将构造对象的多个步骤进行封装成为一个方法 返回值直接是这个对象
         // 传递一个固定格式 {x:1,y:2,direction:"up"} json格式
-        ElementObj element = new Bullet().createElement(this.toString());
+        ElementObj obj = GameLoad.getObj("bullet");
+        ElementObj element = obj.createElement(this.toString());
         ElementManager.getManager().addElement(element, GameElement.BULLET);
         // try {
         // Class<?> forName = Class.forName("com.tedu....");
@@ -207,18 +224,18 @@ public class Play extends ElementObj {
         switch (this.direction) {
             // 后面会改成图片大小,不是固定数值
             case "up":
-                x += 20;
+                x += 12;
                 break;
             case "left":
-                y += 20;
+                y += 12;
                 break;
             case "down":
-                x += 20;
-                y += 50;
+                x += 12;
+                y += 27;
                 break;
             case "right":
-                x += 50;
-                y += 20;
+                x += 27;
+                y += 12;
                 break;
         }
 

@@ -23,8 +23,8 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class GameJFrame extends JFrame {
-    public static int GameX = 900;
-    public static int GameY = 600;
+    public static int GameX = 780;
+    public static int GameY = 620;
     private JPanel jPanel = null; // 正在显示的面板
     private KeyListener keyListener = null; // 键盘监听器
     private Thread thread = null; // 游戏主线程

@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-02 09:01:02
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 10:54:50
+ * @LastEditTime: 2022-07-06 14:21:56
  */
 package com.tedu.manager;
 
@@ -66,17 +66,73 @@ public class GameLoad {
             Set<Object> set = pro.keySet();
             for (Object o : set) {
                 String url = pro.getProperty(o.toString());
-                // System.out.println(o.toString() + " " + url);
-                // System.out.println(url);
-                // imgMap.put(o.toString(), new ImageIcon(url));
                 imgMap.put(o.toString(), new ImageIcon(Play.class.getResource(url)));
-                // System.out.println(imgMap);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /*
+     * 加载主角
+     */
+    public static void loadPlay() {
+        loadObj();
+        String playStr = "500,500,up";
+
+        ElementObj obj = getObj("play");
+
+        // ElementObj play = new Play().createElement(playStr);
+        ElementObj play = obj.createElement(playStr);
+        // 解耦,降低代码之间的耦合度,可以直接通过接口or抽象父类就可以获取到实体对象
+        em.addElement(play, GameElement.PLAY);
+    }
+
+    public static ElementObj getObj(String str) {
+        try {
+            Class<?> class1 = objMap.get(str);
+            Object newInstance = class1.newInstance();
+            if (newInstance instanceof ElementObj) {
+                return (ElementObj) newInstance; // 这个对象和new Play()等价
+            }
+        } catch (InstantiationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /*
+     * 扩展: 使用配置文件,来实例化对象,通过固定的key(字符串来实例化)
+     *
+     * @param key
+     */
+    private static Map<String, Class<?>> objMap = new HashMap<>();
+
+    public static void loadObj() {
+        String textURL = "com/tedu/text/obj.pro";
+        ClassLoader classLoader = GameLoad.class.getClassLoader();
+        InputStream texts = classLoader.getResourceAsStream(textURL);
+        pro.clear();
+        try {
+            pro.load(texts);
+            Set<Object> set = pro.keySet();
+            for (Object o : set) {
+                String classUrl = pro.getProperty(o.toString());
+                // 用反射的方式直接将 类进行获取
+                Class<?> forName = Class.forName(classUrl);
+                objMap.put(o.toString(), forName);
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
-        // System.out.println(imgMap);
     }
 
     public static void main(String[] args) {

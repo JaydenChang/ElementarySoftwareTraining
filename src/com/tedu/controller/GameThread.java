@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-01 15:57:05
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 10:40:07
+ * @LastEditTime: 2022-07-06 11:23:10
  *
  * @继承 使用继承的方式实现多线程(一般建议使用接口实现)
  */
@@ -57,9 +57,13 @@ public class GameThread extends Thread {
      */
 
     private void gameLoad() {
-        GameLoad.loadImg();
-        GameLoad.mapLoad(5);
-        load();
+        GameLoad.loadImg(); // 加载图片
+        GameLoad.mapLoad(5); // 加载地图
+        // 加载主角 可带参,一人or两人
+        GameLoad.loadPlay();
+        // 加载敌人
+
+        // 加载完,游戏启动
     }
 
     /*
@@ -139,32 +143,4 @@ public class GameThread extends Thread {
     private void gameOver() {
     }
 
-    public void load() {
-        // ImageIcon icon = new
-        // ImageIcon("ElementarySoftTraining/image/tank/play1/player1_up.png");
-        ImageIcon icon = new ImageIcon(
-                GameMainJPanel.class.getResource("/image/tank/play1/player1_up.png"));
-        // System.out.println(icon);
-
-        ElementObj obj = new Play(100, 100, 50, 50, icon); // 实例化对象
-        // em.getElementsByKey(GameElement.PLAY).add(obj); // 将对象放到 元素管理器
-        em.addElement(obj, GameElement.PLAY); // 直接添加
-        // ElementObj obj1 = new Play(0, 0, 400, 400, icon);
-        // em.addElement(obj1, GameElement.MAPS);
-        // ElementObj obj2 = new Play(200, 200, 50, 50, icon);
-        // em.addElement(obj2, GameElement.BOSS);
-
-        // 添加一个敌人类, 仿造玩家类写, 不需要时间,不需要键盘监听
-        // 实现敌人的显示,同时实现最简单的移动, 如某坐标移动到某坐标
-
-        // 实现子弹发射, 子弹移动, 元素死亡
-
-        // 道具掉落, 参考子弹发射和死亡
-
-        // 创建敌人
-        for (int i = 0; i < 10; i++) {
-            em.addElement(new Enemy().createElement(""), GameElement.ENEMY);
-        }
-
-    }
 }

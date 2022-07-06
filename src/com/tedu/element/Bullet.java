@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-02 10:46:06
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-04 11:05:12
+ * @LastEditTime: 2022-07-06 14:28:28
  *
  * @子类开发步骤
  * 1.继承与元素基类
@@ -66,33 +66,11 @@ public class Bullet extends ElementObj {
         // TODO Auto-generated method stub
         g.setColor(Color.red);
         g.fillOval(this.getX(), this.getY(), this.getW(), this.getH());
-
-        // int x = this.getX(), y = this.getY();
-        // switch (this.direction) {
-        // case "up":
-        // x += 20;
-        // break;
-        // case "down":
-        // x += 20;
-        // y += 40;
-        // break;
-        // case "left":
-        // y += 20;
-        // break;
-        // case "right":
-        // x += 40;
-        // y += +20;
-        // break;
-        // }
-
-        // System.out.println("x:" + x + " y:" + y);
-
-        // g.fillOval(x, y, this.getW(), this.getH());
     }
 
     @Override
     protected void move() {
-        if (this.getX() < 0 || this.getX() > 500 || this.getY() < 0 || this.getY() > 600) {
+        if (this.getX() < 0 || this.getX() > 780 || this.getY() < 0 || this.getY() > 620) {
             this.setLife(false); // 执行后子弹先停住
             return;
         }
