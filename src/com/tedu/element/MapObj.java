@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-06 09:22:18
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 09:32:39
+ * @LastEditTime: 2022-07-06 14:58:27
  */
 package com.tedu.element;
 
@@ -40,7 +40,7 @@ public class MapObj extends ElementObj {
                 break;
             case "IRON":
                 icon = new ImageIcon(MapObj.class.getResource("/image/wall/iron.png"));
-                this.hp = 4;
+                this.hp = 8;
                 wallType = "IRON";
                 break;
         }

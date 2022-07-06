@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-01 15:57:05
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 11:23:10
+ * @LastEditTime: 2022-07-06 21:54:53
  *
  * @继承 使用继承的方式实现多线程(一般建议使用接口实现)
  */
@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.lang.model.element.Element;
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 
 import com.tedu.element.ElementObj;
 import com.tedu.element.Enemy;
@@ -23,6 +24,7 @@ import com.tedu.game.GameMainJPanel;
 import com.tedu.manager.ElementManager;
 import com.tedu.manager.GameElement;
 import com.tedu.manager.GameLoad;
+import com.tedu.show.Dialog;
 
 public class GameThread extends Thread {
     private ElementManager em;
@@ -58,12 +60,14 @@ public class GameThread extends Thread {
 
     private void gameLoad() {
         GameLoad.loadImg(); // 加载图片
-        GameLoad.mapLoad(5); // 加载地图
+        GameLoad.mapLoad(Play.level); // 加载地图
         // 加载主角 可带参,一人or两人
         GameLoad.loadPlay();
         // 加载敌人
 
+        GameLoad.loadEnemy();
         // 加载完,游戏启动
+
     }
 
     /*
@@ -76,12 +80,19 @@ public class GameThread extends Thread {
      */
 
     private void gameRun() {
+        List<ElementObj> enemies = em.getElementsByKey(GameElement.ENEMY);
+        int total = enemies.size();
+        System.out.println(total);
         while (true) {
             Map<GameElement, List<ElementObj>> all = em.getGameElements();
-            List<ElementObj> enemies = em.getElementsByKey(GameElement.ENEMY);
+
             List<ElementObj> bullets = em.getElementsByKey(GameElement.BULLET);
             List<ElementObj> maps = em.getElementsByKey(GameElement.MAPS);
+            Play.score = total - enemies.size();
 
+            if (enemies.size() == 0) {
+                break;
+            }
             autoUpdate(all, gameTime);
             elementCrash(enemies, bullets);
             elementCrash(bullets, maps);
@@ -94,8 +105,20 @@ public class GameThread extends Thread {
                 e.printStackTrace();
             }
         }
+        if (Play.level == 1) {
+            new Dialog(Play.score, Play.level);
+        }
+        if (Play.level == 2) {
+            new Dialog(Play.score, Play.level);
+            try {
+                stop();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
+    // 元素碰撞判定函数
     public void elementCrash(List<ElementObj> listA, List<ElementObj> listB) {
 
         // 在这里用循环,if为真,设置两个对象的死亡状态
@@ -141,6 +164,17 @@ public class GameThread extends Thread {
      */
 
     private void gameOver() {
+        List<ElementObj> play = em.getElementsByKey(GameElement.PLAY);
+        for (int i = 0; i < play.size(); i++) {
+            ElementObj obj = play.get(i);
+            obj.setLife(false);
+        }
+        Play.level++;
+        try {
+            sleep(5000);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

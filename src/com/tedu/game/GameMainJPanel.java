@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 10:29:20
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-02 08:25:52
+ * @LastEditTime: 2022-07-06 21:04:49
  * @功能说明: 主要进行元素的显示,同时进行界面的刷新(多线程)
  * @多线程刷新:
  * 1.本类实现线程接口
@@ -13,11 +13,15 @@
 package com.tedu.game;
 
 import com.tedu.element.ElementObj;
+import com.tedu.element.Play;
 // import com.tedu.element.Play;
 import com.tedu.manager.ElementManager;
 import com.tedu.manager.GameElement;
 
 import javax.swing.*;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.util.*;
 
@@ -42,6 +46,10 @@ public class GameMainJPanel extends JPanel implements Runnable {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        // g.setFont(new Font("宋体", Font., 20));
+        g.setColor(Color.BLACK);
+        g.drawString("得分: ", 3, 15);
+        g.drawString(Integer.toString(Play.score), 36, 15);
 
         Map<GameElement, List<ElementObj>> all = em.getGameElements();
         // Set<GameElement> set = all.keySet();

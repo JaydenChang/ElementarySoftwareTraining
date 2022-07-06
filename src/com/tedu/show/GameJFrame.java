@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 09:20:07
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-01 10:47:07
+ * @LastEditTime: 2022-07-06 21:31:58
  *
  * @说明: 游戏窗体 主要实现功能: 关闭,显示,最大最小化
  * @功能说明:
@@ -21,11 +21,13 @@ package com.tedu.show;
 
 import javax.swing.*;
 import java.awt.event.*;
+import com.tedu.element.Play;
 
-public class GameJFrame extends JFrame {
+public class GameJFrame extends JFrame implements Runnable {
     public static int GameX = 780;
     public static int GameY = 620;
     private JPanel jPanel = null; // 正在显示的面板
+    private JLabel jLabel = new JLabel(); // 得分显示面板
     private KeyListener keyListener = null; // 键盘监听器
     private Thread thread = null; // 游戏主线程
     // 俩鼠标监听器
@@ -95,5 +97,11 @@ public class GameJFrame extends JFrame {
             // Thread th = new Thread(run);
             // th.start();
         }
+
+    }
+
+    @Override
+    public void run() {
+        this.repaint();
     }
 }

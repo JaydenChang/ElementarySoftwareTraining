@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-02 09:01:02
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 14:21:56
+ * @LastEditTime: 2022-07-06 21:57:27
  */
 package com.tedu.manager;
 
@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.swing.ImageIcon;
 
 import com.tedu.element.ElementObj;
+import com.tedu.element.Enemy;
 import com.tedu.element.MapObj;
 import com.tedu.element.Play;
 
@@ -64,6 +65,7 @@ public class GameLoad {
         try {
             pro.load(texts);
             Set<Object> set = pro.keySet();
+            // System.out.println(set);
             for (Object o : set) {
                 String url = pro.getProperty(o.toString());
                 imgMap.put(o.toString(), new ImageIcon(Play.class.getResource(url)));
@@ -86,6 +88,24 @@ public class GameLoad {
         ElementObj play = obj.createElement(playStr);
         // 解耦,降低代码之间的耦合度,可以直接通过接口or抽象父类就可以获取到实体对象
         em.addElement(play, GameElement.PLAY);
+    }
+
+    public static void loadEnemy() {
+        loadObj();
+        if (Play.level == 1) {
+            for (int i = 0; i < 5; i++) {
+                em.addElement(new Enemy(1).createElement(""), GameElement.ENEMY);
+            }
+        }
+        if (Play.level == 2) {
+            for (int i = 0; i < 5; i++) {
+                em.addElement(new Enemy(1).createElement(""), GameElement.ENEMY);
+            }
+            for (int i = 0; i < 5; i++) {
+                em.addElement(new Enemy(2).createElement(""), GameElement.ENEMY);
+            }
+        }
+
     }
 
     public static ElementObj getObj(String str) {
@@ -133,9 +153,7 @@ public class GameLoad {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+
     }
 
-    public static void main(String[] args) {
-        mapLoad(5);
-    }
 }

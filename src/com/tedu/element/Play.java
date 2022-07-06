@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 14:57:43
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-06 11:14:24
+ * @LastEditTime: 2022-07-06 21:14:04
  */
 package com.tedu.element;
 
@@ -40,6 +40,9 @@ public class Play extends ElementObj {
     private boolean right = false;
     private boolean down = false;
 
+    public static int score = 0;
+    public static int level = 1;
+
     // 图片集合 用map存储 枚举类型配合移动(拓展)
     // private Map<String, ImageIcon> imgMap;
     // 默认主角方向向上
@@ -52,15 +55,6 @@ public class Play extends ElementObj {
     public Play(int x, int y, int w, int h, ImageIcon icon) {
         super(x, y, w, h, icon);
 
-        // imgMap = new HashMap<>();
-        // imgMap.put("left", new
-        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_left.png")));
-        // imgMap.put("down", new
-        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_down.png")));
-        // imgMap.put("up", new
-        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_up.png")));
-        // imgMap.put("right", new
-        // ImageIcon(Play.class.getResource("/image/tank/play1/player1_right.png")));
     }
 
     /*
@@ -146,10 +140,10 @@ public class Play extends ElementObj {
         if (this.up && this.getY() > 0) {
             this.setY(this.getY() - 10);
         }
-        if (this.right && this.getX() < 900 - this.getW()) {
+        if (this.right && this.getX() < 780 - this.getW()) {
             this.setX(this.getX() + 10);
         }
-        if (this.down && this.getY() < 600 - this.getH()) {
+        if (this.down && this.getY() < 620 - this.getH()) {
             this.setY(this.getY() + 10);
         }
     }
@@ -238,11 +232,12 @@ public class Play extends ElementObj {
                 y += 12;
                 break;
         }
-
-        // return "x:" + this.getX() + ",y:" + this.getY() + ",direction:" +
-        // this.direction;
         return "x:" + x + ",y:" + y + ",direction:" + this.direction;
 
     }
 
+    // @Override
+    // public void setLife(boolean life) {
+    // this.life = life;
+    // }
 }
