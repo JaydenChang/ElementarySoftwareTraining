@@ -2,9 +2,9 @@
  * @Description:
  * @version: 1.0.0
  * @Author: Jayden Chang
- * @Date: 2022-07-05 09:17:09
+ * @Date: 2022-07-06 09:22:18
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-05 10:38:20
+ * @LastEditTime: 2022-07-06 09:32:39
  */
 package com.tedu.element;
 
@@ -14,25 +14,26 @@ import javax.swing.ImageIcon;
 
 public class MapObj extends ElementObj {
     private int hp;
-    private String name; // 墙的type,可以用枚举
+    private String wallType;
 
     @Override
     public void showElement(Graphics g) {
         g.drawImage(this.getIcon().getImage(), this.getX(), this.getY(), this.getW(), this.getH(), null);
+
     }
 
-    @Override //
+    @Override
     public ElementObj createElement(String str) {
+        // System.out.println(str);
         String[] arr = str.split(",");
-        // 写一个假图片
         ImageIcon icon = null;
         switch (arr[0]) {
             case "GRASS":
                 icon = new ImageIcon(MapObj.class.getResource("/image/wall/grass.png"));
-                this.hp = 1;
                 break;
             case "BRICK":
                 icon = new ImageIcon(MapObj.class.getResource("/image/wall/brick.png"));
+                this.hp = 1;
                 break;
             case "RIVER":
                 icon = new ImageIcon(MapObj.class.getResource("/image/wall/river.png"));
@@ -40,30 +41,29 @@ public class MapObj extends ElementObj {
             case "IRON":
                 icon = new ImageIcon(MapObj.class.getResource("/image/wall/iron.png"));
                 this.hp = 4;
-                name = "IRON";
+                wallType = "IRON";
                 break;
         }
-
-        this.setX(Integer.parseInt(arr[1]));
-        this.setY(Integer.parseInt(arr[2]));
-        this.setW(icon.getIconWidth());
-        this.setH(icon.getIconHeight());
+        int x = Integer.parseInt(arr[1]);
+        int y = Integer.parseInt(arr[2]);
+        int w = icon.getIconWidth();
+        int h = icon.getIconHeight();
+        this.setX(x);
+        this.setY(y);
+        this.setW(w);
+        this.setH(h);
         this.setIcon(icon);
-
         return this;
     }
 
-    // 设置四级车打铁块
     @Override
     public void setLife(boolean life) {
-        if ("IRON".equals(name)) {
+        if ("IRON".equals(wallType)) {
             this.hp--;
             if (this.hp > 0) {
                 return;
             }
         }
-
         super.setLife(life);
     }
-
 }

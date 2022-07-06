@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-06-30 09:20:07
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-05 09:37:48
+ * @LastEditTime: 2022-07-01 10:47:07
  *
  * @说明: 游戏窗体 主要实现功能: 关闭,显示,最大最小化
  * @功能说明:
@@ -23,8 +23,8 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class GameJFrame extends JFrame {
-    public static int GameX = 750;
-    public static int GameY = 700;
+    public static int GameX = 900;
+    public static int GameY = 600;
     private JPanel jPanel = null; // 正在显示的面板
     private KeyListener keyListener = null; // 键盘监听器
     private Thread thread = null; // 游戏主线程

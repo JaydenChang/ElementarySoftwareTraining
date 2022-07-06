@@ -4,7 +4,7 @@
  * @Author: Jayden Chang
  * @Date: 2022-07-01 15:57:05
  * @LastEditors: Jayden Chang
- * @LastEditTime: 2022-07-05 10:29:29
+ * @LastEditTime: 2022-07-06 10:40:07
  *
  * @继承 使用继承的方式实现多线程(一般建议使用接口实现)
  */
@@ -57,8 +57,8 @@ public class GameThread extends Thread {
      */
 
     private void gameLoad() {
-        GameLoad.MapLoad(1);
-        // 可以为变量,每一关重新加载
+        GameLoad.loadImg();
+        GameLoad.mapLoad(5);
         load();
     }
 
@@ -84,7 +84,7 @@ public class GameThread extends Thread {
             // 这里加一个判定水,草地,铁
             gameTime++;// 唯一的时间控制
             try {
-                sleep(50); // 默认理解为一秒刷新100次
+                sleep(50); // 默认理解为一秒刷新20次
             } catch (InterruptedException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -101,6 +101,7 @@ public class GameThread extends Thread {
             for (int j = 0; j < listB.size(); j++) {
                 ElementObj bullet = listB.get(j);
                 if (enemy.crash(bullet)) {
+                    // System.out.println(listB);
                     enemy.setLife(false);
                     bullet.setLife(false);
                     break;
